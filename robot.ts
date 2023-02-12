@@ -19,7 +19,7 @@ enum RobotDirection {
     //% block="arriere"
     Arriere,
     //% block="gauche"
-    Gauche = 0,
+    Gauche,
     //% block="droite"
     Droite,
 }
@@ -37,7 +37,7 @@ namespace robot {
     /**
      * Configure les roues
      */
-    //% block
+    //% block="Configurer la roue $roue sur la pin $pin"
     export function configurer_roue(roue: Roue, pin: AnalogPin): void {
         wheel_pins[roue] = pin
     }
@@ -69,7 +69,7 @@ namespace robot {
      * Demande à une roue de s'arrêter
      * @param roue : roue à stopper
      */
-    //% block
+    //% block="Arrêter la roue $roue"
     export function stopper_roue(roue: Roue): void {
         pins.servoSetPulse(wheel_pins[roue], 1500)
     }
@@ -78,7 +78,7 @@ namespace robot {
      * Demande au robot de se déplacer
      * @param direction : direction à prendre
      */
-    //% block
+    //% block="Déplacer le robot vers $direction à la vitesse $vitesse"
     //% vitesse.defl=50
     export function deplacer(direction: RobotDirection, vitesse: number): void {
         switch (direction) {
@@ -105,7 +105,7 @@ namespace robot {
     /**
      * Demande au robot de s'arrêter
      */
-    //% block
+    //% block="Arrêter le robot"
     export function stop(): void {
         stopper_roue(Roue.Gauche)
         stopper_roue(Roue.Droite)
