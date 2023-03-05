@@ -1,21 +1,33 @@
-input.onButtonPressed(Button.A, function () {
-    robot.tourner_roue(Roue.Droite, Sens.Avant, 50)
-    robot.tourner_roue(Roue.Gauche, Sens.Avant, 50)
-    basic.pause(1000)
-    robot.stop()
+bluetooth.onBluetoothConnected(function () {
+    basic.showIcon(IconNames.Scissors)
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    robot.deplacer(RobotDirection.Avant, 50)
-    basic.pause(1000)
-    robot.deplacer(RobotDirection.Droite, 50)
-    basic.pause(500)
-    robot.deplacer(RobotDirection.Avant, 50)
-    basic.pause(1000)
-    robot.deplacer(RobotDirection.Gauche, 50)
-    basic.pause(500)
-    robot.deplacer(RobotDirection.Arriere, 50)
-    basic.pause(1000)
-    robot.stop()
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.Hash), function () {
+	
 })
-robot.configurer_roue(Roue.Gauche, AnalogPin.P3)
-robot.configurer_roue(Roue.Droite, AnalogPin.P4)
+let vitesse = 0
+let data = ""
+pins.setPull(DigitalPin.P2, PinPullMode.PullDown)
+bluetooth.startUartService()
+basic.forever(function () {
+    if (data == "f") {
+        robot.deplacer(RobotDirection.Avant, vitesse)
+    } else if (data == "l") {
+        robot.deplacer(RobotDirection.Gauche, vitesse)
+    } else if (data == "r") {
+        robot.deplacer(RobotDirection.Droite, vitesse)
+    } else if (data == "b") {
+        robot.deplacer(RobotDirection.Arriere, vitesse)
+    } else if (data == "s") {
+        robot.stop()
+    } else if (data == "C") {
+        vitesse = 80
+    } else if (data == "H") {
+        vitesse = 50
+    } else if (data == "A") {
+        music.playMelody("A E A F A G - - ", 400)
+    } else {
+    	
+    }
+    basic.showString(data)
+    data = ""
+})

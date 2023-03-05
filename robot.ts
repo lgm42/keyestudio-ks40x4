@@ -31,13 +31,18 @@ enum Roue {
     Droite
 }
 
-//% weight=100 color=#0fbc11 icon=""
+//% color=#0fbc11 icon="\u272a" block="Robot"
+//% category="Robot"
 namespace robot {
     
     /**
      * Configure les roues
      */
     //% block="Configurer la roue $roue sur la pin $pin"
+    //% pin.fieldEditor="gridpicker"
+    //% pin.fieldOptions.columns=4
+    //% pin.fieldOptions.tooltips="false"
+    //% group="Moteurs" weight=66
     export function configurer_roue(roue: Roue, pin: AnalogPin): void {
         wheel_pins[roue] = pin
     }
@@ -49,11 +54,12 @@ namespace robot {
      * @param vitesse : vitesse de rotation de 0 à 100
      */
     //% block="Tourner la roue $roue vers l'$sens à la vitesse $vitesse"
+    //% group="Moteurs" weight=66
     //% vitesse.defl=50
     export function tourner_roue(roue: Roue, sens: Sens, vitesse: number): void {
         //la position par defaut est à 1500 µs
         //on ajoute 500 pour booster artificielement la vitesse par rapport au poids du robot
-        let pwmOffset = vitesse * 5 + 500
+        let pwmOffset = vitesse * 5
         // 100 % de vitesse se déroule sur 0.5 ms
         // en dessous de 0.5ms le robot ne bouge pas
 
@@ -70,6 +76,7 @@ namespace robot {
      * @param roue : roue à stopper
      */
     //% block="Arrêter la roue $roue"
+    //% group="Moteurs" weight=66
     export function stopper_roue(roue: Roue): void {
         pins.servoSetPulse(wheel_pins[roue], 1500)
     }
@@ -80,6 +87,7 @@ namespace robot {
      */
     //% block="Déplacer le robot vers $direction à la vitesse $vitesse"
     //% vitesse.defl=50
+    //% group="Moteurs" weight=66
     export function deplacer(direction: RobotDirection, vitesse: number): void {
         switch (direction) {
             case RobotDirection.Droite :
@@ -99,13 +107,13 @@ namespace robot {
                 tourner_roue(Roue.Droite, Sens.Arriere, vitesse)
                 break
         }
-
     }
 
     /**
      * Demande au robot de s'arrêter
      */
     //% block="Arrêter le robot"
+    //% group="Moteurs" weight=66
     export function stop(): void {
         stopper_roue(Roue.Gauche)
         stopper_roue(Roue.Droite)
